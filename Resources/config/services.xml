@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="audit.update_subscriber" class="Meldon\AuditBundle\Subscriber\UpdateAuditSubscriber">
+            <tag name="doctrine.event_subscriber" connection="default"/>
+        </service>
+        <service id="audit.insert_subscriber" class="Meldon\AuditBundle\Subscriber\InsertAuditSubscriber">
+            <tag name="doctrine.event_subscriber" connection="default" />
+        </service>
+    </services>
+</container>
