@@ -6,10 +6,22 @@
 
     <services>
         <service id="audit.update_subscriber" class="Meldon\AuditBundle\Subscriber\UpdateAuditSubscriber">
-            <tag name="doctrine.event_subscriber" connection="default"/>
+            <tag name="doctrine.event_subscriber" connection="default" />
+            <call method="setLogManager">
+                <argument type="service" id="audit.log_manager" />
+            </call>
         </service>
         <service id="audit.insert_subscriber" class="Meldon\AuditBundle\Subscriber\InsertAuditSubscriber">
             <tag name="doctrine.event_subscriber" connection="default" />
+            <call method="setLogManager">
+                <argument type="service" id="audit.log_manager" />
+            </call>
+        </service>
+        <service id="audit.log_item_repository" class="Meldon\AuditBundle\Repositories\LogItemRepository"
+                 factory-service="doctrine.orm.entity_manager" factory-method="getRepository">
+            <argument>MeldonAuditBundle:LogItemRepository</argument>
+        </service>
+        <service id="audit.log_manager" class="Meldon\AuditBundle\Services\LogManager">
         </service>
     </services>
 </container>

@@ -17,10 +17,18 @@ class LogManager
      * @var LogItem
      */
     private $logItem;
-    public function __construct(LogItemRepository $repository)
+    /**
+     * @var LogItemRepository
+     */
+    private $repository;
+    public function __construct()
     {
         $this->logItem = new LogItem();
-        $repository->save($this->logItem);
+    }
+    public function setRepository(LogItemRepository $logItemRepository)
+    {
+        $this->repository = $logItemRepository;
+        $this->repository->save($this->logItem);
     }
     public function addText($text)
     {

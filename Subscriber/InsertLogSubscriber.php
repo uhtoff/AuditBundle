@@ -17,6 +17,14 @@ use Meldon\StrongholdBundle\Entity\LogItem;
 class InsertLogSubscriber implements EventSubscriber
 {
     /**
+     * @var LogManager
+     */
+    private $logManager;
+    public function setLogManager(LogManager $lm)
+    {
+        $this->logManager = $lm;
+    }
+    /**
      * Returns an array of events this subscriber wants to listen to.
      *
      * @return array
