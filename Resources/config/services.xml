@@ -22,6 +22,9 @@
             <argument>MeldonAuditBundle:LogItemRepository</argument>
         </service>
         <service id="audit.log_manager" class="Meldon\AuditBundle\Services\LogManager">
+            <!--<call method="setRepository">-->
+                <!--<service id="audit.log_item_repository"/>-->
+            <!--</call>-->
         </service>
     </services>
 </container>
