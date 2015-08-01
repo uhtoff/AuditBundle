@@ -17,6 +17,9 @@
                 <argument type="service" id="audit.log_manager" />
             </call>
         </service>
+        <service id="audit.audit_manager" class="Meldon\AuditBundle\Services\AuditManager">
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
+        </service>
         <service id="audit.log_item_repository" class="Meldon\AuditBundle\Repositories\LogItemRepository"
                  factory-service="doctrine.orm.entity_manager" factory-method="getRepository">
             <argument>MeldonAuditBundle:LogItemRepository</argument>

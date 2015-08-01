@@ -4,7 +4,7 @@
  * User: Russ
  * Date: 22/07/2015
  * Time: 21:32
- *
+ * @TODO Test with collections, almost certainly doesn't work
  */
 
 namespace Meldon\AuditBundle\Subscriber;
@@ -37,6 +37,17 @@ class UpdateAuditSubscriber implements EventSubscriber
     {
         return array(Events::onFlush);
     }
+
+    /**
+     * Create a new AuditEntry and add a log entry to it if the log manager is set
+     *
+     * @param EntityManager $em
+     * @param $entity
+     * @param $type
+     * @param null $field
+     * @param null $oldVal
+     * @param null $newVal
+     */
     protected function createAudit(EntityManager $em, $entity, $type, $field = NULL, $oldVal = NULL, $newVal = NULL)
     {
         $changeDate = new \DateTime("now");
@@ -61,8 +72,8 @@ class UpdateAuditSubscriber implements EventSubscriber
             ->computeChangeSet($em->getClassMetadata('Meldon\AuditBundle\Entity\AuditEntry'), $audit);
     }
     /**
-     * Acquires unit of work and creates an AuditEntry for every updated entity
-     * If the entry is an object it inserts the changed autoincrement ID for that object
+     * Acquires unit of work and creates an AuditEntry for every updated and deleted entity
+     * If the entry is an object it inserts the ID for that object
      * @param OnFlushEventArgs $args
      */
     public function onFlush(OnFlushEventArgs $args)

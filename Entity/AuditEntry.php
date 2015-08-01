@@ -96,4 +96,68 @@ class AuditEntry  {
     {
         $this->log = $log;
     }
+
+    /**
+     * @return string
+     */
+    public function getResourceName()
+    {
+        return $this->resourceName;
+    }
+
+    /**
+     * @return int
+     */
+    public function getResourceId()
+    {
+        return $this->resourceId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChangeType()
+    {
+        return $this->changeType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFieldName()
+    {
+        return $this->fieldName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOldValue()
+    {
+        return $this->oldValue;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNewValue()
+    {
+        return $this->newValue;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getChangeDate()
+    {
+        return $this->changeDate;
+    }
+
+    /**
+     * @return LogItem
+     */
+    public function getLog()
+    {
+        return $this->log;
+    }
 }
