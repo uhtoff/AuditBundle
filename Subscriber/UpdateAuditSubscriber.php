@@ -84,7 +84,6 @@ class UpdateAuditSubscriber implements EventSubscriber
         foreach($uow->getScheduledEntityUpdates() as $entity) {
             if ($entity instanceof Auditable) {
                 $changeSet = $uow->getEntityChangeSet($entity);
-
                 foreach ($changeSet as $field => $vals) {
                     list($oldValue, $newValue) = $vals;
                     if (is_object($oldValue)) {
