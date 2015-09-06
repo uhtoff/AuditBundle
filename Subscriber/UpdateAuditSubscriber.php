@@ -54,7 +54,7 @@ class UpdateAuditSubscriber implements EventSubscriber
         $audit = new AuditEntry(
             get_class($entity),
             $entity->getId(),
-            'UPDATE',
+            $type,
             $changeDate,
             $field,
             $oldVal,
@@ -99,11 +99,14 @@ class UpdateAuditSubscriber implements EventSubscriber
 
         foreach($uow->getScheduledEntityDeletions() as $entity) {
             if ($entity instanceof Auditable) {
+                // Iterate through columns (plain values)
                 $cols = $em->getClassMetadata(get_class($entity))->getColumnNames();
                 foreach($cols as $col){
                     $getter = 'get'.ucfirst($col);
                     $this->createAudit($em,$entity,'REMOVE',$col,$entity->$getter());
                 }
+                // Iterate through associations (objects) - probably won't work for nested associations
+                // @TODO Nested assocations fix
                 $assocs = $em->getClassMetadata(get_class($entity))->getAssociationNames();
                 foreach($assocs as $assoc){
                     $getter = 'get'.ucfirst($assoc);
