@@ -25,7 +25,7 @@ class LogManager
     {
         $this->logItem = new LogItem();
     }
-    protected function setRepository(LogItemRepository $logItemRepository)
+    public function setRepository(LogItemRepository $logItemRepository)
     {
         $this->repository = $logItemRepository;
         $this->repository->save($this->logItem);
