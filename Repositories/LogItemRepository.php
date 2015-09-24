@@ -8,11 +8,11 @@
 
 namespace Meldon\AuditBundle\Repositories;
 
-
 use Doctrine\ORM\EntityRepository;
 
 class LogItemRepository extends EntityRepository
 {
+
     public function save(LogItem $logItem)
     {
         $this->_em->persist($logItem);

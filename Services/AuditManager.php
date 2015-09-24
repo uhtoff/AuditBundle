@@ -12,7 +12,6 @@
 
 namespace Meldon\AuditBundle\Services;
 
-
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Meldon\AuditBundle\Entity\AuditEntry;

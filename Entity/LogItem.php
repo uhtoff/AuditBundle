@@ -12,8 +12,7 @@ namespace Meldon\AuditBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Meldon\AuditBundle\Repositories\LogItemRepository")
- * @ORM\Table(name="log_item", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
+ * @ORM\MappedSuperclass
  */
  
 class LogItem  {
@@ -40,7 +39,6 @@ class LogItem  {
     {
         return $this->id;
     }
-
     /**
      * Set text
      *
@@ -53,7 +51,6 @@ class LogItem  {
 
         return $this;
     }
-
     /**
      * Get text
      *

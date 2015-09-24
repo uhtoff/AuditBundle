@@ -16,16 +16,16 @@ class LogManager
     /**
      * @var LogItem
      */
-    private $logItem;
+    protected $logItem;
     /**
      * @var LogItemRepository
      */
-    private $repository;
+    protected $repository;
     public function __construct()
     {
         $this->logItem = new LogItem();
     }
-    public function setRepository(LogItemRepository $logItemRepository)
+    protected function setRepository(LogItemRepository $logItemRepository)
     {
         $this->repository = $logItemRepository;
         $this->repository->save($this->logItem);
