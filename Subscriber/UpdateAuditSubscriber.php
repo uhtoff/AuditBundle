@@ -64,7 +64,7 @@ class UpdateAuditSubscriber implements EventSubscriber
             $em->persist($this->logManager->getLog());
             $audit->addLog($this->logManager->getLog());
             $em->getUnitOfWork()
-                ->computeChangeSet($em->getClassMetadata('Meldon\AuditBundle\Entity\LogItem'),
+                ->computeChangeSet($em->getClassMetadata('Meldon\StrongholdBundle\Entity\StrongholdLogItem'),
                     $this->logManager->getLog());
         }
         $em->persist($audit);
