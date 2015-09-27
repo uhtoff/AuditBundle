@@ -22,7 +22,7 @@ use Meldon\StrongholdBundle\Events\LogFileEvent;
 class UpdateAuditSubscriber implements EventSubscriber
 {
     /**
-     * @param LogItem
+     * @var LogItem
      */
     private $log;
 

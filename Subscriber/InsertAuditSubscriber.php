@@ -15,7 +15,6 @@ use Doctrine\ORM\Events;
 use Meldon\AuditBundle\Entity\Auditable;
 use Meldon\AuditBundle\Entity\AuditEntry;
 use Meldon\AuditBundle\Entity\LogItem;
-use Meldon\AuditBundle\Services\LogManager;
 use Meldon\StrongholdBundle\Events\LogFileEvent;
 
 class InsertAuditSubscriber implements EventSubscriber
@@ -29,7 +28,6 @@ class InsertAuditSubscriber implements EventSubscriber
      */
     private $needsFlush = false;
 
-
     /**
      * Receives LogFileEvent and extracts new log item from it
      * @param LogFileEvent $log
@@ -39,6 +37,10 @@ class InsertAuditSubscriber implements EventSubscriber
         $this->log = $log->getLog();
     }
 
+    /**
+     * Part of Subscriber interface, returns subscribed events
+     * @return array
+     */
     public function getSubscribedEvents()
     {
         return array(
@@ -46,6 +48,12 @@ class InsertAuditSubscriber implements EventSubscriber
             Events::postFlush
         );
     }
+
+    /**
+     * If Auditable entity is newly persisted then add an insert entry into the AuditEntry
+     * Mark to be flushed if any audits added
+     * @param LifecycleEventArgs $args
+     */
     public function postPersist(LifecycleEventArgs $args) {
 
         $entity = $args->getEntity();
@@ -67,6 +75,10 @@ class InsertAuditSubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * Ensure AuditEntry is flushed and stop recurrent flushing
+     * @param PostFlushEventArgs $eventArgs
+     */
     public function postFlush(PostFlushEventArgs $eventArgs)
     {
         if ($this->needsFlush) {
