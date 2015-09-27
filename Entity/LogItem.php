@@ -30,6 +30,11 @@ class LogItem  {
      * @ORM\Column(type="text", nullable=true)
      */
     private $text;
+    public function __construct()
+    {
+        $this->text = '';
+    }
+
     /**
      * Get id
      *
@@ -47,7 +52,10 @@ class LogItem  {
      */
     public function setText($text)
     {
-        $this->text = $text;
+        if ( $this->text != '' ) {
+            $this->text .= "\r\n";
+        }
+        $this->text .= $text;
 
         return $this;
     }

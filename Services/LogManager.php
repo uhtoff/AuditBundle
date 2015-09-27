@@ -8,34 +8,15 @@
 
 namespace Meldon\AuditBundle\Services;
 
-use Meldon\AuditBundle\Entity\LogItem;
-use Meldon\AuditBundle\Repositories\LogItemRepository;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class LogManager
+interface LogManager
 {
-    /**
-     * @var LogItem
-     */
-    protected $logItem;
-    /**
-     * @var LogItemRepository
-     */
-    protected $repository;
-    public function __construct()
-    {
-        $this->logItem = new LogItem();
-    }
-    public function setRepository(LogItemRepository $logItemRepository)
-    {
-        $this->repository = $logItemRepository;
-        $this->repository->save($this->logItem);
-    }
-    public function addText($text)
-    {
-        $this->logItem->setText($text);
-    }
-    public function getLog()
-    {
-        return $this->logItem;
-    }
+    public function __construct(EntityRepository $logItemRepository, EventDispatcherInterface $dispatcher);
+
+    public function addText($text);
+
+    public function getLog();
+
 }

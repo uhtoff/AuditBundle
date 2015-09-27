@@ -9,7 +9,6 @@
 
 namespace Meldon\AuditBundle\Subscriber;
 
-
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Meldon\AuditBundle\Entity\Auditable;
@@ -17,18 +16,25 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Meldon\AuditBundle\Entity\AuditEntry;
-use Meldon\AuditBundle\Services\LogManager;
+use Meldon\AuditBundle\Entity\LogItem;
+use Meldon\StrongholdBundle\Events\LogFileEvent;
 
 class UpdateAuditSubscriber implements EventSubscriber
 {
     /**
-     * @var LogManager
+     * @param LogItem
      */
-    private $logManager;
-    public function setLogManager(LogManager $lm)
+    private $log;
+
+    /**
+     * Receives LogFileEvent and extracts new log item from it
+     * @param LogFileEvent $log
+     */
+    public function setLog(LogFileEvent $log)
     {
-        $this->logManager = $lm;
+        $this->log = $log->getLog();
     }
+
     /**
      * Part of Subscriber interface, returns subscribed events
      * @return array
@@ -39,7 +45,7 @@ class UpdateAuditSubscriber implements EventSubscriber
     }
 
     /**
-     * Create a new AuditEntry and add a log entry to it if the log manager is set
+     * Create a new AuditEntry and add a log entry to it if the log is set
      *
      * @param EntityManager $em
      * @param $entity
@@ -60,16 +66,12 @@ class UpdateAuditSubscriber implements EventSubscriber
             $oldVal,
             $newVal
         );
-        if ($this->logManager) {
-            $em->persist($this->logManager->getLog());
-            $audit->addLog($this->logManager->getLog());
-            $em->getUnitOfWork()
-                ->computeChangeSet($em->getClassMetadata('Meldon\StrongholdBundle\Entity\StrongholdLogItem'),
-                    $this->logManager->getLog());
+        if ( $this->log ) {
+            $audit->addLog($this->log);
         }
         $em->persist($audit);
         $em->getUnitOfWork()
-            ->computeChangeSet($em->getClassMetadata('Meldon\AuditBundle\Entity\AuditEntry'), $audit);
+            ->computeChangeSet($em->getClassMetadata(get_class($audit)), $audit);
     }
     /**
      * Acquires unit of work and creates an AuditEntry for every updated and deleted entity

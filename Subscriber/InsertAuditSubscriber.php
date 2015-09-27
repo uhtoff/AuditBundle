@@ -8,28 +8,35 @@
 
 namespace Meldon\AuditBundle\Subscriber;
 
-
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use Meldon\AuditBundle\Entity\Auditable;
 use Meldon\AuditBundle\Entity\AuditEntry;
+use Meldon\AuditBundle\Entity\LogItem;
 use Meldon\AuditBundle\Services\LogManager;
+use Meldon\StrongholdBundle\Events\LogFileEvent;
 
 class InsertAuditSubscriber implements EventSubscriber
 {
     /**
-     * @var LogManager
+     * @var LogItem
      */
-    private $logManager;
+    private $log;
     /**
      * @var bool
      */
     private $needsFlush = false;
-    public function setLogManager(LogManager $lm)
+
+
+    /**
+     * Receives LogFileEvent and extracts new log item from it
+     * @param LogFileEvent $log
+     */
+    public function setLog(LogFileEvent $log)
     {
-        $this->logManager = $lm;
+        $this->log = $log->getLog();
     }
 
     public function getSubscribedEvents()
@@ -52,9 +59,8 @@ class InsertAuditSubscriber implements EventSubscriber
                 'INSERT',
                 $changeDate
             );
-            if ($this->logManager) {
-                $em->persist($this->logManager->getLog());
-                $audit->addLog($this->logManager->getLog());
+            if ($this->log) {
+                $audit->addLog($this->log);
             }
             $em->persist($audit);
             $this->needsFlush = true;
